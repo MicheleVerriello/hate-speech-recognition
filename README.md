@@ -1,1 +1,1 @@
-# hate-speech-recognition
+# Binary classification for sexist sentences
