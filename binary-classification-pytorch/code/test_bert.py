@@ -29,43 +29,43 @@ def classify_sentence(input_sentence, model, tokenizer, device):
 
 
 if __name__ == '__main__':
-    # device = torch.device("mps" if torch.cuda.is_available() else "cpu")
-    #
-    # # Load model and tokenizer
-    # model_path = '../models/transformers/bert_model_for_binary_classification.pt'
-    # model = BertForSequenceClassification.from_pretrained('bert-base-cased', num_labels=2)
-    # model.load_state_dict(torch.load(model_path, map_location=device))
-    # model.to(device)
-    # model.eval()
-    # tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    #
-    # dataset = get_dataset('test')
-    # dataset['result_bert'] = None
-    #
-    # error_sentences = []
-    #
-    #
-    # def process_row(row):
-    #     result = classify_sentence(row['sentence'], model, tokenizer, device)
-    #     return row.name, result  # Return the index and result
-    #
-    #
-    # # Use ThreadPoolExecutor to parallelize the processing of rows
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     futures = [executor.submit(process_row, row) for index, row in dataset.iterrows()]
-    #
-    #     for future in concurrent.futures.as_completed(futures):
-    #         index, result = future.result()
-    #         if result is not None:
-    #             dataset.loc[index, 'result_bert'] = result
-    #             print("good")
-    #         else:
-    #             error_sentences.append(dataset.loc[index, 'sentence'])
-    #
-    # print(f"Errors: {error_sentences}")
-    #
-    # print(dataset.head())
-    # dataset.to_csv('../dataset/test_bert_result.csv', index=False)
+    device = torch.device("mps" if torch.cuda.is_available() else "cpu")
+
+    # Load model and tokenizer
+    model_path = '../models/transformers/bert_model_for_binary_classification.pt'
+    model = BertForSequenceClassification.from_pretrained('bert-base-cased', num_labels=2)
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.to(device)
+    model.eval()
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
+    dataset = get_dataset('test')
+    dataset['result_bert'] = None
+
+    error_sentences = []
+
+
+    def process_row(row):
+        result = classify_sentence(row['sentence'], model, tokenizer, device)
+        return row.name, result  # Return the index and result
+
+
+    # Use ThreadPoolExecutor to parallelize the processing of rows
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_row, row) for index, row in dataset.iterrows()]
+
+        for future in concurrent.futures.as_completed(futures):
+            index, result = future.result()
+            if result is not None:
+                dataset.loc[index, 'result_bert'] = result
+                print("good")
+            else:
+                error_sentences.append(dataset.loc[index, 'sentence'])
+
+    print(f"Errors: {error_sentences}")
+
+    print(dataset.head())
+    dataset.to_csv('../dataset/test_bert_result.csv', index=False)
 
     dataset = pd.read_csv('../dataset/test_bert_result.csv')
 
