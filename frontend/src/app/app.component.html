@@ -21,10 +21,19 @@
         </div>
       </div>
 
-      <button class="fancy-button" (click)="classifySentence()">Submit</button>
+      <div class="form-group horizontal">
+        <button class="fancy-button" (click)="classifySentence()">Submit</button>
+      </div>
+
 
       <div class="form-group horizontal">
         Your sentence is: <b>{{result}}</b>
+      </div>
+      <div class="form-group horizontal">
+        <b>Feedback:</b>
+      </div>
+      <div class="form-group horizontal">
+        <button class="fancy-button" (click)="sendFeedback(true)">Correct</button> &nbsp;&nbsp; <button class="fancy-button" style="background-color: red" (click)="sendFeedback(false)">Incorrect</button>
       </div>
     </div>
   </div>

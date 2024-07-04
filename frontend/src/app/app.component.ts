@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {ClassificationService} from "./services/classification.service";
+import {Feedback} from "./models/feedback";
 
 @Component({
   selector: 'app-root',
@@ -35,5 +36,20 @@ export class AppComponent {
     sentence = sentence.replaceAll('\/', "")
 
     return sentence
+  }
+
+  sendFeedback(isResultCorrect: boolean) {
+    const feedback: Feedback = {
+      sentence: this.sentence,
+      label: this.calculateResult(isResultCorrect)
+    }
+    this.classificationService.sendFeedback(feedback).subscribe(res => console.log(res));
+  }
+
+  calculateResult(isResultCorrect: boolean): string {
+    if (isResultCorrect) return this.result;
+    else if (this.result === "not sexist") { return "sexist"}
+    else return "not sexist"
+
   }
 }
