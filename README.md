@@ -1,6 +1,9 @@
 # Binary classification for sexist sentences
+The final result of this project is a WebApp built with Angular and Python that allows you to classify a sentence!
 
-## Environment
+![alt text](frontend_screenshot.png)
+
+## How to reproduce the experiment
 To run the project you need
 - Python3
 - pip3
